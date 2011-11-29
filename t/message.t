@@ -50,14 +50,14 @@ use Protocol::BitTorrent::Message;
 	my $buffer = pack 'N1C1C1C1', 2, 5, 0, 0;
 	ok(my $msg = Protocol::BitTorrent::Message->new_from_buffer(\$buffer), 'can instantiate message');
 	is($msg->type, 'bitfield', 'type is correct');
-	is($msg->as_string, 'bitfield, 0 bytes', 'string version is correct');
+	is($msg->as_string, 'bitfield, 0 bytes, pieces 00000000', 'string version is correct');
 }
 
 { # request
 	my $buffer = pack 'N1C1N1N1N1', 13, 6, 0, 0, 0;
 	ok(my $msg = Protocol::BitTorrent::Message->new_from_buffer(\$buffer), 'can instantiate message');
 	is($msg->type, 'request', 'type is correct');
-	is($msg->as_string, 'request, 0 bytes', 'string version is correct');
+	is($msg->as_string, 'request, 0 bytes, index = 0, begin = 0, length = 0', 'string version is correct');
 }
 
 { # piece

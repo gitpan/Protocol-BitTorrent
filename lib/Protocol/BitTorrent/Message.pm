@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message;
 {
-  $Protocol::BitTorrent::Message::VERSION = '0.001';
+  $Protocol::BitTorrent::Message::VERSION = '0.002';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -23,7 +23,7 @@ Protocol::BitTorrent::Message - base class for BitTorrent messages
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -86,7 +86,7 @@ sub new_from_buffer {
 
 {
 
-my %type_map = (
+my %type_for_id = (
 	0 => 'choke',
 	1 => 'unchoke',
 	2 => 'interested',
@@ -99,6 +99,8 @@ my %type_map = (
 	9 => 'port',
 );
 
+my %id_for_type = reverse %type_for_id;
+
 =head2 class_name_by_type
 
 Returns the class name for the given type (as taken from a BitTorrent network packet).
@@ -107,7 +109,14 @@ Returns the class name for the given type (as taken from a BitTorrent network pa
 
 sub class_name_by_type {
 	my ($self, $type) = @_;
-	return __PACKAGE__ . '::' . ucfirst $type_map{$type};
+	return __PACKAGE__ . '::' . ucfirst $type_for_id{$type};
+}
+
+sub type_id {
+	my $self = shift;
+	my $type = $self->type or die "No type for $self";
+	die "No ID found for [$type] on $self" unless exists $id_for_type{$type};
+	return $id_for_type{$type};
 }
 
 }
@@ -133,6 +142,11 @@ in subclasses.
 =cut
 
 sub type { 'unknown' }
+
+sub as_data {
+	my $self = shift;
+	return pack 'N1C1', 1, $self->type_id;
+}
 
 1;
 

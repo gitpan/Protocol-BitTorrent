@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Request;
 {
-  $Protocol::BitTorrent::Message::Request::VERSION = '0.001';
+  $Protocol::BitTorrent::Message::Request::VERSION = '0.002';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Request - a piece request
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =cut
 
@@ -26,12 +26,43 @@ version 0.001
 
 sub new_from_data {
 	my $class = shift;
+	my $data = shift;
+
+	my ($index, $begin, $len) = unpack 'N1N1N1', $data;
+	$class->new(
+		piece_index	=> $index,
+		offset		=> $begin,
+		block_length	=> $len,
+	);
+}
+
+sub new {
+	my $class = shift;
+	my %args = @_;
 	my $self = bless {
+		piece_index	=> $args{piece_index},
+		offset		=> $args{offset},
+		block_length	=> $args{block_length},
 	}, $class;
 	$self;
 }
 
 sub type { 'request' }
+
+sub piece_index { shift->{piece_index} }
+sub offset { shift->{offset} }
+sub block_length { shift->{block_length} }
+
+=head2 as_string
+
+Returns a stringified version of this message.
+
+=cut
+
+sub as_string {
+	my $self = shift;
+	return sprintf '%s, %d bytes, index = %d, begin = %d, length = %d', $self->type, $self->packet_length, $self->piece_index, $self->offset, $self->block_length;
+}
 
 1;
 

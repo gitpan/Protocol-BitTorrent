@@ -1,10 +1,11 @@
 package Protocol::BitTorrent::Metainfo;
 {
-  $Protocol::BitTorrent::Metainfo::VERSION = '0.001';
+  $Protocol::BitTorrent::Metainfo::VERSION = '0.002';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
 use POSIX qw(floor ceil);
+use List::Util qw(sum);
 use Try::Tiny;
 use URI;
 use URI::QueryParam;
@@ -18,7 +19,7 @@ Protocol::BitTorrent::Metainfo - support for metainfo as found in .torrent files
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 

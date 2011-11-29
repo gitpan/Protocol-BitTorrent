@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
 use parent qw(Protocol::BitTorrent::Bencode);
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 =head1 NAME
 
@@ -12,7 +12,7 @@ Protocol::BitTorrent - protocol-level support for BitTorrent and .torrent files
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -81,6 +81,108 @@ sub generate_metainfo {
 	my $self = shift;
 	my %args = @_;
 	return Protocol::BitTorrent::Metainfo->new(%args);
+}
+
+{ # peer type mapping
+my %azureus_peer_types = (
+	'AG' => 'Ares',
+	'A~' => 'Ares',
+	'AR' => 'Arctic',
+	'AT' => 'Artemis',
+	'AX' => 'BitPump',
+	'AZ' => 'Azureus',
+	'BB' => 'BitBuddy',
+	'BC' => 'BitComet',
+	'BF' => 'Bitflu',
+	'BG' => 'BTG',
+	'BL' => 'BitBlinder',
+	'BP' => 'BitTorrent Pro',
+	'BR' => 'BitRocket',
+	'BS' => 'BTSlave',
+	'BW' => 'BitWombat',
+	'BX' => '~Bittorrent X',
+	'CD' => 'Enhanced CTorrent',
+	'CT' => 'CTorrent',
+	'DE' => 'DelugeTorrent',
+	'DP' => 'Propagate Data Client',
+	'EB' => 'EBit',
+	'ES' => 'electric sheep',
+	'FC' => 'FileCroc',
+	'FT' => 'FoxTorrent',
+	'GS' => 'GSTorrent',
+	'HK' => 'Hekate',
+	'HL' => 'Halite',
+	'HM' => 'hMule',
+	'HN' => 'Hydranode',
+	'KG' => 'KGet',
+	'KT' => 'KTorrent',
+	'LC' => 'LeechCraft',
+	'LH' => 'LH-ABC',
+	'LP' => 'Lphant',
+	'LT' => 'libtorrent',
+	'lt' => 'libTorrent',
+	'LW' => 'LimeWire',
+	'MK' => 'Meerkat',
+	'MO' => 'MonoTorrent',
+	'MP' => 'MooPolice',
+	'MR' => 'Miro',
+	'MT' => 'MoonlightTorrent',
+	'NX' => 'Net Transport',
+	'OS' => 'OneSwarm',
+	'OT' => 'OmegaTorrent',
+	'PD' => 'Pando',
+	'PT' => 'PHPTracker',
+	'qB' => 'qBittorrent',
+	'QD' => 'QQDownload',
+	'QT' => 'Qt 4 Torrent example',
+	'RT' => 'Retriever',
+	'RZ' => 'RezTorrent',
+	'S~' => 'Shareaza alpha/beta',
+	'SB' => '~Swiftbit',
+	'SD' => 'Thunder (aka XùnLéi)',
+	'SM' => 'SoMud',
+	'SS' => 'SwarmScope',
+	'ST' => 'SymTorrent',
+	'st' => 'sharktorrent',
+	'SZ' => 'Shareaza',
+	'TN' => 'TorrentDotNET',
+	'TR' => 'Transmission',
+	'TS' => 'Torrentstorm',
+	'TT' => 'TuoTu',
+	'UL' => 'uLeecher!',
+	'UM' => 'µTorrent for Mac',
+	'UT' => 'µTorrent',
+	'VG' => 'Vagaa',
+	'WT' => 'BitLet',
+	'WY' => 'FireTorrent',
+	'XL' => 'Xunlei',
+	'XS' => 'XSwifter',
+	'XT' => 'XanTorrent',
+	'XX' => 'Xtorrent',
+	'ZT' => 'ZipTorrent',
+);
+
+=head2 peer_type_from_id
+
+Returns the client type for a given peer_id.
+
+=cut
+
+sub peer_type_from_id {
+	my $self = shift;
+	my $peer_id = shift;
+
+	# Handle us first
+	return "Protocol::BitTorrent v$1.$2" if $peer_id =~ /^-PB(\d)(\d{3})-/;
+
+	# Azureus-style clients
+	if($peer_id =~ /^-(..)(....)-/) {
+		my $type = $azureus_peer_types{$1} || 'Unknown';
+		my $v = join '.', map hex, split //, $2;
+		return "$type v$v";
+	}
+	return 'unknown';
+}
 }
 
 1;

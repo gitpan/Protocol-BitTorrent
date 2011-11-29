@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Bitfield;
 {
-  $Protocol::BitTorrent::Message::Bitfield::VERSION = '0.001';
+  $Protocol::BitTorrent::Message::Bitfield::VERSION = '0.002';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Bitfield - bitfield support
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =cut
 
@@ -24,14 +24,36 @@ version 0.001
 
 =cut
 
-sub new_from_data {
+sub new {
 	my $class = shift;
+	my %args = @_;
 	my $self = bless {
+		bitfield	=> $args{bitfield},
 	}, $class;
 	$self;
 }
 
+sub new_from_data {
+	my $class = shift;
+	my $data = shift;
+	$class->new(
+		bitfield => $data
+	);
+}
+
 sub type { 'bitfield' }
+
+sub bitfield { shift->{bitfield} }
+
+sub as_data {
+	my $self = shift;
+	return pack 'N1C1a*', 1 + length($self->bitfield), $self->type_id, $self->bitfield;
+}
+
+sub as_string {
+	my $self = shift;
+	return sprintf '%s, %d bytes, pieces %s', $self->type, $self->packet_length, unpack 'B*', $self->bitfield;
+}
 
 1;
 

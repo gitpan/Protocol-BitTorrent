@@ -16,6 +16,7 @@ lib/Protocol/BitTorrent/Message.pm
 lib/Protocol/BitTorrent/Message/Bitfield.pm
 lib/Protocol/BitTorrent/Message/Cancel.pm
 lib/Protocol/BitTorrent/Message/Choke.pm
+lib/Protocol/BitTorrent/Message/Handshake.pm
 lib/Protocol/BitTorrent/Message/Have.pm
 lib/Protocol/BitTorrent/Message/Interested.pm
 lib/Protocol/BitTorrent/Message/Keepalive.pm

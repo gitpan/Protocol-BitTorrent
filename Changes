@@ -1,5 +1,9 @@
 Revision history for Protocol-BitTorrent
 
+0.002     2011-11-29 05:19:04 Europe/London
+	Provide missing Handshake class, peer ID mapping from http://wiki.theory.org/BitTorrentSpecification#peer_id
+	and improvements to packet handling/stringification.
+
 0.001     2011-11-27 06:02:44 Europe/London
 	Initial CPAN release, attempting to check whether the dzil perlbrew prereq tests
 	match what cpantesters have to say about the release.
