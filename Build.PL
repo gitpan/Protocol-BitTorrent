@@ -21,7 +21,7 @@ my %module_build_args = (
     "Tom Molesworth <cpan\@entitymodel.com>"
   ],
   "dist_name" => "Protocol-BitTorrent",
-  "dist_version" => "0.002",
+  "dist_version" => "0.003",
   "license" => "perl",
   "module_name" => "Protocol::BitTorrent",
   "recommends" => {},

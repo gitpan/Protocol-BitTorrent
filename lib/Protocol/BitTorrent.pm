@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
 use parent qw(Protocol::BitTorrent::Bencode);
 
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 =head1 NAME
 
@@ -12,7 +12,7 @@ Protocol::BitTorrent - protocol-level support for BitTorrent and .torrent files
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

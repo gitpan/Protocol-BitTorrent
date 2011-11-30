@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message;
 {
-  $Protocol::BitTorrent::Message::VERSION = '0.002';
+  $Protocol::BitTorrent::Message::VERSION = '0.003';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -23,7 +23,7 @@ Protocol::BitTorrent::Message - base class for BitTorrent messages
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -72,15 +72,29 @@ sub new_from_buffer {
 	return undef unless defined $buffer && length $$buffer >= 4;
 
 # First item is the length (excluding 4-byte length field)
-	my ($len) = unpack 'N1', substr $$buffer, 0, 4, '';
+	my ($len) = unpack 'N1', substr $$buffer, 0, 4;
 
 # Keepalive messages just contain the 4-byte length, no other data
-	return Protocol::BitTorrent::Message::Keepalive->new unless $len--;
+	unless($len) {
+		substr $$buffer, 0, 4, '';
+		return Protocol::BitTorrent::Message::Keepalive->new;
+	}
 
+# If we don't have enough data, bail out until we get more
+	return undef unless length $$buffer >= $len;
+
+# At this point we can modify our section of the buffer with impunity since we
+# know that we have at least one packet. Drop the length first.
+	substr $$buffer, 0, 4, '';
 	my ($type_id) = unpack 'C1', substr $$buffer, 0, 1, '';
 	my $class_name = $class->class_name_by_type($type_id)
 		or die sprintf "Invalid type [%02x] detected", $type_id;
 
+# Drop the type byte from our length calculations
+	--$len;
+
+# Should probably check for valid buffer lengths, better to keep this in the subclass though?
+#	die "Bad buffer: " . join ' ', map sprintf('%02x', ord), split //, $$buffer if $len != 12 && $type_id == 6 && length $$buffer >= 12;
 	return $class_name->new_from_data($len ? substr $$buffer, 0, $len, '' : '');
 }
 

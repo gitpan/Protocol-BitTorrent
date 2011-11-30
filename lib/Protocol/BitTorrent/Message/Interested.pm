@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Interested;
 {
-  $Protocol::BitTorrent::Message::Interested::VERSION = '0.002';
+  $Protocol::BitTorrent::Message::Interested::VERSION = '0.003';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Interested - mark peer as interested
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =cut
 

@@ -64,7 +64,7 @@ use Protocol::BitTorrent::Message;
 	my $buffer = pack('N1C1N1N1', 10, 7, 0, 0) . 'x';
 	ok(my $msg = Protocol::BitTorrent::Message->new_from_buffer(\$buffer), 'can instantiate message');
 	is($msg->type, 'piece', 'type is correct');
-	is($msg->as_string, 'piece, 0 bytes', 'string version is correct');
+	is($msg->as_string, 'piece, 0 bytes, index = 0, begin = 0, length = 1', 'string version is correct');
 }
 
 { # cancel

@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Have;
 {
-  $Protocol::BitTorrent::Message::Have::VERSION = '0.002';
+  $Protocol::BitTorrent::Message::Have::VERSION = '0.003';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Have - have message support
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =cut
 

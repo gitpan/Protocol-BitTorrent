@@ -1,10 +1,10 @@
 package Protocol::BitTorrent::Metainfo;
 {
-  $Protocol::BitTorrent::Metainfo::VERSION = '0.002';
+  $Protocol::BitTorrent::Metainfo::VERSION = '0.003';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
-use POSIX qw(floor ceil);
+use POSIX qw(floor ceil strftime);
 use List::Util qw(sum);
 use Try::Tiny;
 use URI;
@@ -19,7 +19,7 @@ Protocol::BitTorrent::Metainfo - support for metainfo as found in .torrent files
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -60,7 +60,7 @@ sub new {
 	my $self = bless { }, shift;
 	my %args = @_;
 
-	$self->{$_} = delete $args{$_} for qw(announce comment encoding);
+	$self->{$_} = delete $args{$_} for qw(announce comment encoding created);
 	$self->{files} ||= [ ];
 	die "Unknown metainfo parameter: $_\n" for sort keys %args;
 	return $self;
@@ -82,6 +82,7 @@ sub parse_info {
 	my $info = shift;
 
 	$self->$_($info->{$_}) for grep exists $info->{$_}, qw(announce comment encoding);
+	$self->{created} = $info->{'creation date'} if exists $info->{'creation date'};
 	if(exists $info->{info}) {
 		$self->{files} = [ {
 			map({ $_ => $info->{info}->{$_} } qw(name length)),
@@ -405,6 +406,7 @@ sub as_metainfo {
 
 	$info{'created by'} = $self->created_by if defined $self->created_by;
 	($info{info}) = $self->files;
+	$info{info}{pieces} = $self->pieces;
 	return \%info;
 }
 
@@ -420,7 +422,8 @@ sub add_file {
 	my $filename = shift;
 	warn "Add $filename\n";
 	my $size = -s $filename;
-	$self->piece_length(262144);
+	# $self->piece_length(262144);
+	$self->piece_length(1048576);
 	my $hash = $self->hash_for_file($filename);
 
 	push @{$self->{files}}, {

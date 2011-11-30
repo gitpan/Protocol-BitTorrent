@@ -24,7 +24,8 @@ EOF
 my $info = Protocol::BitTorrent::Metainfo->new(
 	announce => $trackers,
 	comment => $comment,
-	private => $private,
+	created => time,
+#	private => $private,
 );
 $info->add_file($_, recurse => 1) for @ARGV;
 use Data::Dumper;

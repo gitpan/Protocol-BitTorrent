@@ -1,5 +1,9 @@
 Revision history for Protocol-BitTorrent
 
+0.003     2011-11-30 01:06:00 Europe/London
+	Better handling for partial message packets, proper piece+request message support, include creation time
+	when creating a new torrent.
+
 0.002     2011-11-29 05:19:04 Europe/London
 	Provide missing Handshake class, peer ID mapping from http://wiki.theory.org/BitTorrentSpecification#peer_id
 	and improvements to packet handling/stringification.

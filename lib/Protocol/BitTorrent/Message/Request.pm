@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Request;
 {
-  $Protocol::BitTorrent::Message::Request::VERSION = '0.002';
+  $Protocol::BitTorrent::Message::Request::VERSION = '0.003';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Request - a piece request
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =cut
 
@@ -28,7 +28,12 @@ sub new_from_data {
 	my $class = shift;
 	my $data = shift;
 
+# Complain mightily if we have an invalid request.
+# TODO extend this to all message types
+	die "Bad length for buffer: " . join ' ', map sprintf('%02x', ord), split //, $data if length($data) != 12;
+
 	my ($index, $begin, $len) = unpack 'N1N1N1', $data;
+	die join ' ', "Data", unpack('H*', $data), 'has no length' unless defined $len;
 	$class->new(
 		piece_index	=> $index,
 		offset		=> $begin,
