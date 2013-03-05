@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Metainfo;
 {
-  $Protocol::BitTorrent::Metainfo::VERSION = '0.003';
+  $Protocol::BitTorrent::Metainfo::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -19,7 +19,7 @@ Protocol::BitTorrent::Metainfo - support for metainfo as found in .torrent files
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -84,13 +84,35 @@ sub parse_info {
 	$self->$_($info->{$_}) for grep exists $info->{$_}, qw(announce comment encoding);
 	$self->{created} = $info->{'creation date'} if exists $info->{'creation date'};
 	if(exists $info->{info}) {
-		$self->{files} = [ {
-			map({ $_ => $info->{info}->{$_} } qw(name length)),
-		} ];
+		my @files;
+		if($info->{info}->{files}) {
+			$self->{root_path} = $info->{info}{name};
+			foreach my $f (@{$info->{info}{files}}) {
+				push @files, {
+					length => $f->{length},
+					name => join '/', @{$f->{path}},
+				};
+			}
+		} else {
+			push @files, +{
+				map { $_ => $info->{info}->{$_} } qw(name length)
+			};
+		}
+		$self->{files} = \@files;
 		$self->{piece_length} = $info->{info}->{'piece length'};
 		$self->{pieces} = $info->{info}->{pieces};
+		$self->{is_private} = $info->{info}->{private} if exists $info->{info}->{private};
 	}
 	return $self;
+}
+
+sub root_path {
+	my $self = shift;
+	if(@_) {
+		$self->{root_path} = shift;
+		return $self
+	}
+	return $self->{root_path};
 }
 
 =head2 infohash
@@ -121,14 +143,25 @@ Returns or updates the info data (referred to as an 'info dictionary' in the spe
 sub file_info {
 	my $self = shift;
 	unless(exists $self->{info}) {
-		my ($file) = $self->files;
 		$self->{info} = {
 			'piece length'	=> $self->piece_length,
 			'pieces'	=> $self->pieces,
-			'name'		=> $file->{name},
-			'length'	=> $file->{length},
 		};
 		$self->{info}->{private} = $self->is_private if $self->has_private_flag;
+		if($self->files == 1) {
+			my ($file) = $self->files;
+			$self->{info}{name} = $file->{name};
+			$self->{info}{length} = $file->{length};
+		} else {
+			$self->{info}{name} = $self->root_path;
+			$self->{info}{files} = [];
+			foreach my $file ($self->files) {
+				push @{ $self->{info}{files} }, {
+					'length' => $file->{length},
+					'path' => [ split m{/}, $file->{name} ],
+				}
+			}
+		}
 	}
 	return $self->{info};
 }
@@ -213,7 +246,7 @@ sub files {
 		$self->{files} = shift;
 		return $self;
 	}
-	return @{$self->{files}};
+	return map +{ %$_ }, @{$self->{files}};
 }
 
 =head2 announce
@@ -420,7 +453,6 @@ and is in single mode, will switch to multi mode.
 sub add_file {
 	my $self = shift;
 	my $filename = shift;
-	warn "Add $filename\n";
 	my $size = -s $filename;
 	# $self->piece_length(262144);
 	$self->piece_length(1048576);
@@ -457,7 +489,7 @@ sub hash_for_file {
 
 =head2 announce_url
 
-Returns the tracker announce URL including the 
+Returns the tracker announce URL
 
 Takes the following named parameters:
 
@@ -528,4 +560,4 @@ Tom Molesworth <cpan@entitymodel.com>
 
 =head1 LICENSE
 
-Copyright Tom Molesworth 2011. Licensed under the same terms as Perl itself.
+Copyright Tom Molesworth 2011-2013. Licensed under the same terms as Perl itself.

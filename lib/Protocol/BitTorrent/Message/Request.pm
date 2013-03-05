@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Request;
 {
-  $Protocol::BitTorrent::Message::Request::VERSION = '0.003';
+  $Protocol::BitTorrent::Message::Request::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Request - a piece request
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =cut
 

@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Port;
 {
-  $Protocol::BitTorrent::Message::Port::VERSION = '0.003';
+  $Protocol::BitTorrent::Message::Port::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Port - indicates TCP/UDP port to use
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =cut
 

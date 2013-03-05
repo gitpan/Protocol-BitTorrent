@@ -13,19 +13,14 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "Tom Molesworth <cpan\@entitymodel.com>",
   "BUILD_REQUIRES" => {
     "File::Slurp" => 0,
-    "Module::Build" => "0.3601",
     "Test::Fatal" => 0,
-    "Test::More" => "0.88"
+    "Test::More" => "0.98"
   },
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => "6.30",
-    "Module::Build" => "0.3601"
+    "ExtUtils::MakeMaker" => "6.30"
   },
   "DISTNAME" => "Protocol-BitTorrent",
-  "EXE_FILES" => [
-    "bin/torrentcreate.pl",
-    "bin/torrentedit.pl"
-  ],
+  "EXE_FILES" => [],
   "LICENSE" => "perl",
   "NAME" => "Protocol::BitTorrent",
   "PREREQ_PM" => {
@@ -37,7 +32,7 @@ my %WriteMakefileArgs = (
     "URI::QueryParam" => 0,
     "parent" => 0
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }

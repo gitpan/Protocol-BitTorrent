@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message;
 {
-  $Protocol::BitTorrent::Message::VERSION = '0.003';
+  $Protocol::BitTorrent::Message::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -23,7 +23,7 @@ Protocol::BitTorrent::Message - base class for BitTorrent messages
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 

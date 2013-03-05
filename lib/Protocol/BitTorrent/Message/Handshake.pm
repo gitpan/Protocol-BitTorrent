@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Handshake;
 {
-  $Protocol::BitTorrent::Message::Handshake::VERSION = '0.003';
+  $Protocol::BitTorrent::Message::Handshake::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Handshake - initial bittorrent peer handshake mes
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =cut
 

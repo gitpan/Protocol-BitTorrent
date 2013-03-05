@@ -1,7 +1,8 @@
-Build.PL
 Changes
+INSTALL
 LICENSE
 MANIFEST
+META.json
 META.yml
 Makefile.PL
 README
@@ -9,6 +10,7 @@ bin/torrentcreate.pl
 bin/torrentedit.pl
 dist.ini
 examples/scrape.pl
+examples/show.pl
 examples/url.pl
 lib/Protocol/BitTorrent.pm
 lib/Protocol/BitTorrent/Bencode.pm
@@ -26,10 +28,17 @@ lib/Protocol/BitTorrent/Message/Request.pm
 lib/Protocol/BitTorrent/Message/Unchoke.pm
 lib/Protocol/BitTorrent/Message/Uninterested.pm
 lib/Protocol/BitTorrent/Metainfo.pm
+t/00-compile.t
 t/00-pod.t
 t/00-use.t
 t/bencode.t
 t/message.t
+t/multiple.t
+t/multiple.torrent
 t/peer_id.t
 t/single.t
 t/single.torrent
+xt/release/mojibake.t
+xt/release/pod-syntax.t
+xt/release/test-version.t
+xt/release/unused-vars.t

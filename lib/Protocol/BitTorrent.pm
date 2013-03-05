@@ -1,10 +1,11 @@
 package Protocol::BitTorrent;
 # ABSTRACT: abstract implementation of the bittorrent p2p protocol
 use strict;
-use warnings FATAL => 'all', NONFATAL => 'redefine';
+use warnings;
 use parent qw(Protocol::BitTorrent::Bencode);
+use utf8;
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 =head1 NAME
 
@@ -12,7 +13,7 @@ Protocol::BitTorrent - protocol-level support for BitTorrent and .torrent files
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -139,7 +140,7 @@ my %azureus_peer_types = (
 	'RZ' => 'RezTorrent',
 	'S~' => 'Shareaza alpha/beta',
 	'SB' => '~Swiftbit',
-	'SD' => 'Thunder (aka XùnLéi)',
+	'SD' => 'Thunder (aka XunLei)',
 	'SM' => 'SoMud',
 	'SS' => 'SwarmScope',
 	'ST' => 'SymTorrent',

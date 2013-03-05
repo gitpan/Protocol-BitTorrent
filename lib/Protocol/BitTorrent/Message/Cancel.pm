@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Message::Cancel;
 {
-  $Protocol::BitTorrent::Message::Cancel::VERSION = '0.003';
+  $Protocol::BitTorrent::Message::Cancel::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -12,7 +12,7 @@ Protocol::BitTorrent::Message::Cancel - cancel support
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =cut
 

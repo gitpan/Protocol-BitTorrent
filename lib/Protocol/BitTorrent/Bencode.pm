@@ -1,6 +1,6 @@
 package Protocol::BitTorrent::Bencode;
 {
-  $Protocol::BitTorrent::Bencode::VERSION = '0.003';
+  $Protocol::BitTorrent::Bencode::VERSION = '0.004';
 }
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'redefine';
@@ -8,11 +8,11 @@ use Convert::Bencode_XS qw();
 
 =head1 NAME
 
-Protocol::BitTorrent::Bencode - mixin for bencode/bdecode support 
+Protocol::BitTorrent::Bencode - mixin for bencode/bdecode support
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
